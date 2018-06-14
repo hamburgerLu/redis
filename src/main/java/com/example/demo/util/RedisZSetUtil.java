@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.ZParams;
 import redis.clients.jedis.params.sortedset.ZAddParams;
 import redis.clients.jedis.params.sortedset.ZIncrByParams;
 
@@ -166,9 +167,220 @@ public class RedisZSetUtil {
         return jedis.zrange(key,start,end);
     }
 
+    /**
+     * ZREVRANK命令，返回有序集合key中的member的排名（默认从大到小排列）
+     * @param key
+     * @param member
+     * @return
+     */
+    public Long zrevrank(String key, String member){
+        jedis = jedisPool.getResource();
+        return jedis.zrevrank(key,member);
+    }
+
+    /**
+     * ZREVRANGE命令，返回有序集合给定排名范围内的成员，默认按照从大到小排列
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Set<String> zrevrange(String key, long start, long end){
+        jedis = jedisPool.getResource();
+        return jedis.zrevrange(key,start,end);
+    }
+
+
+    /**
+     * zrangeByScore命令，有四种方式：
+     * 1、返回有序集合中分值介于min和max之间的成员
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public Set<String> zrangeByScore(String key, double min, double max){
+        jedis = jedisPool.getResource();
+        return jedis.zrangeByScore(key,min,max);
+    }
+
+    /**
+     * 2、返回有序集合中成员名字介于min和max之间的成员
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public Set<String> zrangeByScore(String key, String min, String max){
+        jedis = jedisPool.getResource();
+        return jedis.zrangeByScore(key,min,max);
+    }
+
+    /**
+     * 3、返回有序集合中分值介于min和max之间的成员，从offset开始，数count个
+     * @param key
+     * @param min
+     * @param max
+     * @param offset
+     * @param count
+     * @return
+     */
+    public Set<String> zrangeByScore(String key, double min, double max, int offset, int count) {
+        jedis = jedisPool.getResource();
+        return jedis.zrangeByScore(key,min,max,offset,count);
+    }
+
+    /**
+     * 4、返回有序集合中成员名字介于min和max之间的成员，从offset开始，数count个
+     * @param key
+     * @param min
+     * @param max
+     * @param offset
+     * @param count
+     * @return
+     */
+    public Set<String> zrangeByScore(String key, String min, String max, int offset, int count){
+        jedis = jedisPool.getResource();
+        return jedis.zrangeByScore(key,min,max,offset,count);
+    }
 
 
 
+    /**
+     * zrevrangeByScore命令，有四种方式：
+     * 1、返回有序集合中分值介于min和max之间的成员，并按照分值从大到小返回他们
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public Set<String> zrevrangeByScore(String key, double min, double max){
+        jedis = jedisPool.getResource();
+        return jedis.zrevrangeByScore(key,min,max);
+    }
+
+    /**
+     * 2、返回有序集合中成员名字介于min和max之间的成员，并按照分值从大到小返回他们
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public Set<String> zrevrangeByScore(String key, String min, String max){
+        jedis = jedisPool.getResource();
+        return jedis.zrevrangeByScore(key,min,max);
+    }
+
+    /**
+     * 3、返回有序集合中分值介于min和max之间的成员，从offset开始，数count个，并按照分值从大到小返回他们
+     * @param key
+     * @param min
+     * @param max
+     * @param offset
+     * @param count
+     * @return
+     */
+    public Set<String> zrevrangeByScore(String key, double min, double max, int offset, int count) {
+        jedis = jedisPool.getResource();
+        return jedis.zrevrangeByScore(key,min,max,offset,count);
+    }
+
+    /**
+     * 4、返回有序集合中成员名字介于min和max之间的成员，从offset开始，数count个，并按照分值从大到小返回他们
+     * @param key
+     * @param min
+     * @param max
+     * @param offset
+     * @param count
+     * @return
+     */
+    public Set<String> zrevrangeByScore(String key, String min, String max, int offset, int count){
+        jedis = jedisPool.getResource();
+        return jedis.zrevrangeByScore(key,min,max,offset,count);
+    }
+
+
+    /**
+     * 移除所有的有序集合中的排名介于start和end之间的成员
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Long zremrangeByRank(String key, long start, long end){
+        jedis = jedisPool.getResource();
+        return jedis.zremrangeByRank(key,start,end);
+    }
+
+
+    /**
+     * zremrangeByScore命令，有两种
+     * 1、移除分值介于min和max之间的成员
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Long zremrangeByScore(String key, double min, double max){
+        jedis = jedisPool.getResource();
+        return jedis.zremrangeByScore(key,min,max);
+    }
+
+    /**
+     *  2、移除成员介于min和max之间的成员
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public Long zremrangeByScore(String key, String min, String max){
+        jedis = jedisPool.getResource();
+        return jedis.zremrangeByScore(key,min,max);
+    }
+
+
+    /**
+     * 类似于集合中的交集运算，把sets中共有的成员的分值相加然后存入destkey中
+     * @param dstkey
+     * @param sets
+     * @return
+     */
+    public Long zinterStore(String dstkey, String... sets){
+        jedis = jedisPool.getResource();
+        return jedis.zinterstore(dstkey,sets);
+    }
+    /**
+     * 指定了对于相同成员的操作，（最大，最小，求和）
+     * @param dstkey
+     * @param params
+     * @param sets
+     * @return
+     */
+    public Long zinterStore(String dstkey, ZParams params, String... sets){
+        jedis = jedisPool.getResource();
+        return jedis.zinterstore(dstkey,params,sets);
+    }
+
+    /**
+     * 类似于集合中的并集运算，把sets中共有的成员的分值相加然后存入destkey中
+     * @param dstkey
+     * @param sets
+     * @return
+     */
+    public Long zunionstore(String dstkey, String... sets){
+        jedis = jedisPool.getResource();
+        return jedis.zunionstore(dstkey,sets);
+    }
+    /**
+     * 指定了对于相同成员的操作，（最大，最小，求和）
+     * @param dstkey
+     * @param sets
+     * @return
+     */
+    public Long zunionstore(String dstkey,ZParams params, String... sets){
+        jedis = jedisPool.getResource();
+        return jedis.zunionstore(dstkey,params,sets);
+    }
 
 
 }
