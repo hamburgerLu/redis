@@ -317,8 +317,8 @@ public class RedisZSetUtil {
      * zremrangeByScore命令，有两种
      * 1、移除分值介于min和max之间的成员
      * @param key
-     * @param start
-     * @param end
+     * @param min
+     * @param max
      * @return
      */
     public Long zremrangeByScore(String key, double min, double max){
